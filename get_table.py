@@ -89,6 +89,24 @@ Ib = a**2 * Ia
 Ic = a * Ia
 
 Iat = IA - Ia
+Ibt = a**2 * Iat
+Ict = a * Iat
+
+Iab = Iat * cmath.exp(1j*30* (math.pi / 180))/ math.sqrt(3)
+Ibc = a**2 * Iab
+Ica = a * Iab
+
+""" Баланс мощностей """
+SI = 3 * Ua * IA
+print(abs(IA))
+SH = 3 * (abs(IA)**2 * Zla + abs(Ia)**2 * Za + abs(Iab)**2 * Zab) #TODO проверить
 
 
-print('Ответ', format_complex_number(Ia))
+Ys = (abs(SI) - abs(SH))/ abs(SI)
+Yp = (SI.real - SH.real) / SI.real
+Yq = (SI.imag - SH.imag) / SI.imag
+
+print(Ys)
+print(Yp)
+print(Yq)
+print('Ответ', format_complex_number(SH))
