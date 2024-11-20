@@ -1,15 +1,15 @@
 import cmath
-
-import pandas as pd
 import math
 
+import pandas as pd
 
-#35 # 32
+
+# 35 # 32
 def format_complex_number(z):
     modulus = abs(z)
     argument = cmath.phase(z)
     argument_deg = math.degrees(argument)
-    return f"{modulus:.2f}e^j{round(argument_deg, 2)}°"
+    return f'{modulus:.2f}e^j{round(argument_deg, 2)}°'
 
 
 file_path = 'data_table/rgr4.ods'
@@ -17,7 +17,7 @@ file_path = 'data_table/rgr4.ods'
 data = pd.read_excel(file_path, sheet_name='data')
 
 fifth_row = data.iloc[32]
-name =  fifth_row['Фамилия Имя Отчество ']
+name = fifth_row['Фамилия Имя Отчество ']
 print(name)
 E = fifth_row['Фазная ЭДС E, В']
 Rl = fifth_row['Сопротивления компонентов фаз, Ом ZЛ RЛ']
@@ -37,14 +37,13 @@ Ea = E
 Eb = E
 Ec = E
 Ua = Ea + 0j
-Ub = Ua * cmath.exp(-1j*120*(math.pi / 180))
+Ub = Ua * cmath.exp(-1j * 120 * (math.pi / 180))
 Uc = Ub
 
 """Uab, Ubc, Uca - линейные напряжения, Ubc и Uca смещены относительно Uab на -120 и 120"""
-Uab = math.sqrt(3) * Ua * cmath.exp(1j*30*(math.pi / 180))
-Ubc = Uab * cmath.exp(-1j*120 * (math.pi / 180))
-Uca = Uab * cmath.exp(1j*120 * (math.pi / 180))
-
+Uab = math.sqrt(3) * Ua * cmath.exp(1j * 30 * (math.pi / 180))
+Ubc = Uab * cmath.exp(-1j * 120 * (math.pi / 180))
+Uca = Uab * cmath.exp(1j * 120 * (math.pi / 180))
 
 
 """Вывод результатов"""
@@ -56,19 +55,19 @@ print('Ubc', format_complex_number(Ubc))
 print('Uca', format_complex_number(Uca))
 
 """Вторая часть"""
-Xl = (1j*XLl * (-1j*XCl)) / (1j*XLl - 1j*XCl)
-Zl = Zla = 1/(1/Rl + 1/(1j*XLl) - 1/(1j*XCl))
-Zz = Za = R3 + 1j*XLz - 1j*Xl * XCz
-Zt = Zab = Xab = Rt + 1j*XLt - 1j*XCt
+Xl = (1j * XLl * (-1j * XCl)) / (1j * XLl - 1j * XCl)
+Zl = Zla = 1 / (1 / Rl + 1 / (1j * XLl) - 1 / (1j * XCl))
+Zz = Za = R3 + 1j * XLz - 1j * Xl * XCz
+Zt = Zab = Xab = Rt + 1j * XLt - 1j * XCt
 
-Zzet = Zta = Xta = Zt*Zt / (Zt + Zt+ Zt)
-Zzn = 1 / (1/Za + 1/Zta)
+Zzet = Zta = Xta = Zt * Zt / (Zt + Zt + Zt)
+Zzn = 1 / (1 / Za + 1 / Zta)
 Zf = Zla + Zzn
 
 """Третья часть"""
 IA = Ua / Zf
-a = cmath.exp(1j*120*(math.pi / 180))
-IB = a ** 2 * IA
+a = cmath.exp(1j * 120 * (math.pi / 180))
+IB = a**2 * IA
 IC = a * IA
 
 """Четвертая часть"""
@@ -77,7 +76,7 @@ delta_Ulb = a**2 * delta_Ula
 delta_Ulc = a * delta_Ula
 
 UA = Ua - delta_Ula
-UB = a ** 2 * UA
+UB = a**2 * UA
 UC = a * UA
 
 UAB = UA - UB
@@ -92,17 +91,17 @@ Iat = IA - Ia
 Ibt = a**2 * Iat
 Ict = a * Iat
 
-Iab = Iat * cmath.exp(1j*30* (math.pi / 180))/ math.sqrt(3)
+Iab = Iat * cmath.exp(1j * 30 * (math.pi / 180)) / math.sqrt(3)
 Ibc = a**2 * Iab
 Ica = a * Iab
 
 """ Баланс мощностей """
 SI = 3 * Ua * IA
 print(abs(IA))
-SH = 3 * (abs(IA)**2 * Zla + abs(Ia)**2 * Za + abs(Iab)**2 * Zab) #TODO проверить
+SH = 3 * (abs(IA) ** 2 * Zla + abs(Ia) ** 2 * Za + abs(Iab) ** 2 * Zab)  # TODO проверить
 
 
-Ys = (abs(SI) - abs(SH))/ abs(SI)
+Ys = (abs(SI) - abs(SH)) / abs(SI)
 Yp = (SI.real - SH.real) / SI.real
 Yq = (SI.imag - SH.imag) / SI.imag
 
